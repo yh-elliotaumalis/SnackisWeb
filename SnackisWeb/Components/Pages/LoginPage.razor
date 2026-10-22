@@ -1,0 +1,19 @@
+﻿@page "/login"
+<PageTitle>Logga in</PageTitle>
+<h1>Logga in</h1>
+
+<div>
+    <EditForm Model="@LoginInput" OnValidSubmit="HandleLogin" method="post" FormName="LoginForm">
+        <div class="mb-3">
+            <label for="email" class="form-label">E-post</label>
+            <InputText id="email" class="form-control" @bind-Value="LoginInput.Email" />
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Lösenord</label>
+            <InputText id="password" type="password" class="form-control" @bind-Value="LoginInput.Password" />
+        </div>
+        <ValidationMessage For="@(() => LoginInput.Email)" />
+        <ValidationMessage For="@(() => LoginInput.Password)" />
+        <button type="submit" class="btn btn-primary">Logga in</button>
+    </EditForm>
+</div>

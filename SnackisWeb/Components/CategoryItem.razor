@@ -1,0 +1,31 @@
+﻿<div class="d-flex flex-column p-1 bg-body-secondary rounded mb-2 border">
+    <a href="@GetCategoryUrl(Category)" class="fs-5 text-dark link-underline link-underline-opacity-0 link-underline-opacity-75-hover">@Category.Name</a>
+    @if (Category.Topic is not null)
+    {
+        <span class="text-muted">@Category.Topic</span>
+    }
+
+    @if (ChildCategories.Any())
+    { 
+        <ul class="list-group list-group-flush rounded-3 mt-2 list-unstyled ms-4">
+            @foreach (var childCategory in ChildCategories)
+            {
+                <li>
+                    <CategoryItem Category="childCategory" Categories="Categories" Threads="Threads"></CategoryItem>
+                </li>
+            }
+        </ul>
+    }
+
+    @if(CategoryThreads.Any())
+    {
+        <ul class="list-group list-group-flush rounded-3 mt-2 list-unstyled ms-4">
+            @foreach (var thread in CategoryThreads)
+            {
+                <li>
+                    <ThreadItem Thread="thread" />
+                </li>
+            }
+        </ul>
+    }
+</div>

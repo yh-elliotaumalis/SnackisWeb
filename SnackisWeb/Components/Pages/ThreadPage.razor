@@ -1,0 +1,42 @@
+﻿@page "/threads/{ThreadId:int}"
+@using Microsoft.AspNetCore.Components.Authorization
+@rendermode InteractiveServer
+@if (Thread is null)
+{
+    <h1 class="text-danger">Den tråden du har valt finns inte längre.</h1>
+}
+else
+{
+    <h1>@Thread.Title</h1>
+    @foreach (var post in Thread.Posts)
+    {
+        <PostItem Post="post" />
+    }
+
+    <div class="card mt-2 shadow-sm">
+        <div class="card-header">
+            <h4>Svara</h4>
+        </div>
+        <div class="card-body">
+            <AuthorizeView>
+                <Authorized Context="authContext">
+                    <EditForm Model="@CreatingPost" OnSubmit="CreatePost" FormName="CreatingPostForm">
+                        <div class="mb-4">
+                            <InputTextArea class="form-control w-100" @bind-Value="CreatingPost.Body" rows="4" />
+                        </div>
+                        <ValidationMessage For="@(() => CreatingPost.Body)" />
+                        <button type="submit" class="btn btn-primary mt-2" disabled="@IsCreatingPost">Skicka</button>
+                    </EditForm>
+                </Authorized>
+                <NotAuthorized>
+                    <p>Du måste vara inloggad för att kunna svara.</p>
+                </NotAuthorized>
+            </AuthorizeView>
+
+            @if(Error is not null)
+            {
+                <div class="alert alert-danger mt-2">@Error</div>
+            } 
+        </div>
+    </div>
+}

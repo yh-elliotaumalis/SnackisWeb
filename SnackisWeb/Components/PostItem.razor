@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+<div class="card mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="d-flex align-items-center gap-2">
+            <ProfileImage FileName="@Post.ProfileImage" />
+            @Post.UserName
+        </span>
+        <span class="d-flex align-items-center gap-3">
+            <span class="text-muted">@Post.Date</span>
+            <AuthorizeView>
+                <Authorized>
+                    @if (ShowReportButton)
+                    {
+                        <button class="btn btn-sm btn-danger" @onclick="OpenReportForm" disabled="@Reported">Anmäl</button>
+                    }
+                </Authorized>
+            </AuthorizeView>
+        </span>
+    </div>
+    <div class="card-body">
+        <p class="card-text">@Post.Body</p>
+    </div>
+
+    @if(ReportFormVisible)
+    {
+        <div class="card-footer">
+            <EditForm Model="@ReportInput" OnValidSubmit="CreateReport" FormName="ReportForm">
+                <div class="mb-3">
+                    <label for="reason" class="form-label">Anledningen till anmälan</label>
+                    <InputTextArea id="reason" class="form-control w-100" @bind-Value="ReportInput.Reason" rows="4" />
+                </div>
+                <ValidationMessage For="@(() => ReportInput.Reason)" />
+                <button type="submit" class="btn btn-primary">Skicka anmälan</button>
+            </EditForm>
+
+            @if(Error is not null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @Error
+                </div>
+            }
+        </div>
+    }
+</div>

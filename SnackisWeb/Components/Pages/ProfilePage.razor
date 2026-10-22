@@ -1,0 +1,40 @@
+@page "/profile"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+<h1>Profil</h1>
+
+<EditForm Model="@NameInput" OnValidSubmit="UpdateName" method="post" FormName="NameForm">
+    <div class="mb-3">
+        <label for="name" class="form-label">Namn</label>
+        <InputText id="name" class="form-control" @bind-Value="NameInput.Name" />
+    </div>
+    <ValidationMessage For="@(() => NameInput.Name)" />
+    <button type="submit" class="btn btn-primary">Spara namn</button>
+</EditForm>
+
+@if (NameError != "")
+{
+    <div class="alert alert-danger mt-2" role="alert">
+        @NameError
+    </div>
+}
+
+<div class="mb-3 mt-4">
+    <ProfileImage FileName="@CurrentUser?.ProfileImage" Size="96" />
+</div>
+
+<form method="post" enctype="multipart/form-data" @formname="ProfileImageForm" @onsubmit="UploadImage">
+    <AntiforgeryToken />
+    <div class="mb-3">
+        <label for="image" class="form-label">Profilbild</label>
+        <input type="file" id="image" name="image" class="form-control" accept=".png,.jpg,.jpeg,.webp,.gif" />
+    </div>
+    <button type="submit" class="btn btn-primary">Ladda upp</button>
+</form>
+
+@if (Error != "")
+{
+    <div class="alert alert-danger mt-2" role="alert">
+        @Error
+    </div>
+}

@@ -1,0 +1,48 @@
+﻿@page "/admin/categories"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+<h1>Admin - Kategorier</h1>
+
+<button class="btn btn-primary mb-2" @onclick="ToggleCreateCategory">Skapa Kategori</button>
+@if(CreateCategoryOpen)
+{
+    <EditForm Model="@NewCategory" OnSubmit="CreateCategory" FormName="CreateCategoryForm">
+        <DataAnnotationsValidator />
+        <div class="mb-3">
+            <InputText class="form-control" @bind-Value="NewCategory.Name" placeholder="Namn" />
+            <ValidationMessage For="@(() => NewCategory.Name)" />
+        </div>
+        <div class="mb-3">
+            <InputTextArea class="form-control" @bind-Value="NewCategory.Topic" placeholder="Ämne" />
+            <ValidationMessage For="@(() => NewCategory.Topic)" />
+        </div>
+        <div class="mb-3">
+            <InputNumber class="form-control" @bind-Value="NewCategory.Priority" placeholder="Prioritet" />
+            <ValidationMessage For="@(() => NewCategory.Priority)" />
+        </div>
+        <div class="mb-3">
+            <InputSelect class="form-control" @bind-Value="NewCategory.ParentCategoryId">
+                <option value="">Huvudkategori</option>
+                @foreach (var category in Categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </InputSelect>
+        </div>
+        <button type="submit" class="btn btn-primary" disabled="@IsCreatingCategory">Skapa Kategori</button>
+    </EditForm>
+}
+
+@foreach (var category in Categories)
+{
+    <div class="card mb-2">
+        <div class="card-body">
+            <h5 class="card-title">@category.Name</h5>
+            <p class="card-text">@category.Topic</p>
+            <div class="d-flex gap-2 mt-2">
+                <button class="btn btn-danger" @onclick="@(() => DeleteCategory(category.Id))">Ta bort kategori</button>
+            </div>
+        </div>
+    </div>
+}

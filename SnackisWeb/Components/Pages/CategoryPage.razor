@@ -1,0 +1,15 @@
+﻿@page "/category/{CategoryId:int}"
+@using Microsoft.AspNetCore.Components.Authorization
+@rendermode InteractiveServer
+@if(Category is null)
+{
+    <h1 class="text-danger">Den kategorin du har valt finns inte längre.</h1>
+} else
+{
+    <AuthorizeView>
+        <Authorized>
+            <a class="btn btn-primary" href="@($"/category/{CategoryId}/create-thread")">Skapa tråd</a>
+        </Authorized>
+    </AuthorizeView>
+    <CategoryItem Category="Category" Categories="Categories" Threads="Threads" DisplayThreads="true" />
+}

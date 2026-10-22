@@ -1,0 +1,29 @@
+﻿@page "/category/{CategoryId:int}/create-thread"
+@rendermode InteractiveServer
+<PageTitle>Skapa tråd</PageTitle>
+
+@if (Category is null)
+{
+    <h1 class="text-danger">Den kategorin du har valt finns inte längre.</h1>
+}
+else
+{
+    <h1>Skapa tråd i @Category.Name</h1>
+    <EditForm Model="@ThreadRequest" OnValidSubmit="CreateThread" FormName="CreatingThreadForm">
+        <div class="mb-3">
+            <label for="title" class="form-label">Titel</label>
+            <InputText id="title" class="form-control" @bind-Value="ThreadRequest.Title" />
+        </div>
+        <div class="mb-3">
+            <label for="body" class="form-label">Innehåll</label>
+            <InputTextArea id="body" class="form-control w-100" @bind-Value="ThreadRequest.Body" rows="4" />
+        </div>
+        <ValidationMessage For="@(() => ThreadRequest.Title)" />
+        <ValidationMessage For="@(() => ThreadRequest.Body)" />
+        <button type="submit" class="btn btn-primary">Skapa tråd</button>
+    </EditForm>
+    @if (Error is not null)
+    {
+        <div class="alert alert-danger mt-2">@Error</div>
+    }
+}

@@ -1,0 +1,10 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject IJSRuntime JS
+
+<PageTitle>Home</PageTitle>
+
+@foreach(var category in PrimaryCategories)
+{
+    <CategoryItem Category="category" Categories="Categories" Threads="Threads" DisplayThreads="true"/>
+}

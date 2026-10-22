@@ -1,0 +1,56 @@
+﻿@page "/messages"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+<PageTitle>Meddelanden</PageTitle>
+<h1>Meddelanden</h1>
+
+<EditForm Model="@MessageRequest" OnValidSubmit="CreateMessage" FormName="CreatingMessageForm">
+    <div class="mb-3">
+        <label for="recipient" class="form-label">Mottagare</label>
+        <InputSelect id="recipient" class="form-select" @bind-Value="MessageRequest.RecipientId">
+            <option value="">Välj mottagare</option>
+            @foreach (var user in Users)
+            {
+                <option value="@user.Id">@user.Name</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="mb-3">
+        <label for="content" class="form-label">Meddelande</label>
+        <InputTextArea id="content" class="form-control w-100" @bind-Value="MessageRequest.Content" rows="4" />
+    </div>
+    <ValidationMessage For="@(() => MessageRequest.RecipientId)" />
+    <ValidationMessage For="@(() => MessageRequest.Content)" />
+    <button type="submit" class="btn btn-primary" disabled="@IsCreatingMessage">Skicka</button>
+</EditForm>
+
+@if (Error is not null)
+{
+    <div class="alert alert-danger mt-2">@Error</div>
+}
+
+<div class="mt-4">
+    @if (Messages.Count == 0)
+    {
+        <h3 class="text-muted">Du har inga meddelanden.</h3>
+    }
+    else
+    {
+        @foreach (var message in Messages)
+        {
+            <div class="card mb-2">
+                <div class="card-header d-flex justify-content-between">
+                    <span>
+                        <ProfileImage FileName="@message.Sender.ProfileImage" />
+                        @message.Sender.Name > @message.Recipient.Name
+                    </span>
+                    <span class="text-muted">@message.Date</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">@message.Content</p>
+                </div>
+            </div>
+        }
+    }
+</div>

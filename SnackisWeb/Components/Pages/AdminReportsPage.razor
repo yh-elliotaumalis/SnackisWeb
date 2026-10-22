@@ -1,0 +1,30 @@
+﻿@page "/admin/reports"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+<h1>Admin - Anmälningar</h1>
+
+@if (Reports is null || Reports.Count == 0)
+{
+    <h3 class="text-danger">Det finns inga anmälningar att visa.</h3>
+}
+else
+{
+    @foreach (var report in Reports)
+    {
+        <div class="card mb-2">
+            <div class="card-header d-flex justify-content-between">
+                <span>Anmäld av @report.Reporter?.Name</span>
+                <span class="text-muted">@report.Date</span>
+            </div>
+            <div class="card-body">
+                <p class="mb-2">@report.Reason</p>
+                <PostItem Post="report.ForumPost" ShowReportButton="false"></PostItem>
+                <div class="d-flex gap-2 mt-2">
+                    <button class="btn btn-danger" @onclick="@(() => DeleteReport(report.Id))">Ta bort anmälan</button>
+                    <button class="btn btn-danger" @onclick="@(() => DeletePost(report.ForumPost.Id))">Ta bort inlägg</button>
+                </div>
+            </div>
+        </div>
+    }
+}

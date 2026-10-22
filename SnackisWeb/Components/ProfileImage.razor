@@ -1,0 +1,17 @@
+@inject IHttpClientFactory HttpClientFactory
+
+@if (string.IsNullOrEmpty(FileName))
+{
+    <span class="d-inline-block rounded-circle bg-secondary align-middle" style="width: @(Size)px; height: @(Size)px;"></span>
+}
+else
+{
+    <img src="@(HttpClientFactory.CreateClient("ForumClient").BaseAddress)userImages/@FileName" class="rounded-circle align-middle" style="width: @(Size)px; height: @(Size)px; object-fit: cover;" />
+}
+
+@code {
+    [Parameter]
+    public string? FileName { get; set; }
+    [Parameter]
+    public int Size { get; set; } = 32;
+}

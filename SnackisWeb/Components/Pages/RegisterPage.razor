@@ -1,0 +1,19 @@
+﻿@page "/register"
+<PageTitle>Registrera</PageTitle>
+<h1>Registrera</h1>
+
+<div>
+    <EditForm Model="@RegisterInput" OnValidSubmit="HandleRegister" method="post" FormName="RegisterForm">
+        <div class="mb-3">
+            <label for="email" class="form-label">E-post</label>
+            <InputText id="email" class="form-control" @bind-Value="RegisterInput.Email" />
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Lösenord</label>
+            <InputText id="password" type="password" class="form-control" @bind-Value="RegisterInput.Password" />
+        </div>
+        <ValidationMessage For="@(() => RegisterInput.Email)" />
+        <ValidationMessage For="@(() => RegisterInput.Password)" />
+        <button type="submit" class="btn btn-primary">Registrera</button>
+    </EditForm>
+</div>

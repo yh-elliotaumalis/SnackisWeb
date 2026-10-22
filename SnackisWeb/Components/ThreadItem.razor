@@ -1,0 +1,11 @@
+﻿<div class="d-flex flex-column rounded-3">
+    <a href="@GetThreadUrl(Thread)">@Thread.Title</a>
+    <div class="d-flex justify-content-between">
+        <span class="text-muted">
+            <ProfileImage FileName="@Thread.ProfileImage" />
+            @Thread.UserName
+        </span>
+        <span class="text-muted">@Thread.Date</span>
+    </div>
+    
+</div>
